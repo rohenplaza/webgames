@@ -179,13 +179,9 @@ class SharpShooterEngine {
      * Start next wave
      */
     startNextWave() {
-        // Check if level up
-        const newLevel = Math.floor(this.score / CONFIG.GAME.POINTS_PER_LEVEL) + 1;
-        if (newLevel > this.level) {
-            this.level = newLevel;
-            this.waveManager.level = this.level;
-        }
-
+        // Advance level after each wave completion
+        this.level++;
+        this.waveManager.level = this.level;
         this.waveManager.startWave();
     }
 
@@ -282,10 +278,10 @@ class SharpShooterEngine {
         this.ctx.fillStyle = 'white';
         this.ctx.font = 'bold 48px Arial';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText('WAVE COMPLETE!', CONFIG.CANVAS_WIDTH / 2, CONFIG.CANVAS_HEIGHT / 2 - 20);
+        this.ctx.fillText('WAVE COMPLETE!', CONFIG.CANVAS_WIDTH / 2, CONFIG.CANVAS_HEIGHT / 2 - 30);
 
-        this.ctx.font = '24px Arial';
-        this.ctx.fillText(`Level ${this.level}`, CONFIG.CANVAS_WIDTH / 2, CONFIG.CANVAS_HEIGHT / 2 + 30);
+        this.ctx.font = '28px Arial';
+        this.ctx.fillText(`Next: Level ${this.level + 1}`, CONFIG.CANVAS_WIDTH / 2, CONFIG.CANVAS_HEIGHT / 2 + 20);
     }
 
     /**
