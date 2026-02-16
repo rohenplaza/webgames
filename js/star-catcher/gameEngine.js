@@ -167,9 +167,10 @@ class GameEngine {
             // Restore health but don't exceed max
             this.health = Math.min(this.health + CONFIG.OBJECTS.STAR.HEALTH_RESTORE, CONFIG.GAME.MAX_HEALTH);
 
-            // Life bonus: gain a life every 100 points if you have 2 or fewer lives
-            if (this.score >= this.nextLifeBonusScore && this.lives <= 2) {
-                this.lives++;
+            // Life bonus: gain a life every 100 points if you have exactly 1 life left
+            if (this.score >= this.nextLifeBonusScore && this.lives === 1) {
+                this.lives++; // Gain 1 life (to 2 lives)
+                this.health = 10; // Start at 10% health
                 this.nextLifeBonusScore += 100; // Next bonus at +100 points
             }
         } else {

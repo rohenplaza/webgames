@@ -25,7 +25,7 @@ const CONFIG = {
             HEIGHT: 30,
             COLOR: '#FFD700',
             POINTS: 10,
-            HEALTH_RESTORE: 15, // Health restored when catching a star
+            HEALTH_RESTORE: 5, // Health restored when catching a star (5% per star)
             HEALTH_PENALTY_MISSED: 20, // Health lost when missing a star
             SPAWN_CHANCE: 0.7 // 70% chance to spawn a star
         },
