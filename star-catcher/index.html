@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Catcher Game</title>
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/star-catcher.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1>Star Catcher</h1>
+            <div class="game-stats">
+                <div class="stat">
+                    <span class="stat-label">Score:</span>
+                    <span id="score" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Lives:</span>
+                    <span id="lives" class="stat-value">3</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Level:</span>
+                    <span id="level" class="stat-value">1</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="health-container">
+            <div class="health-label">Health</div>
+            <div class="health-bar-outer">
+                <div id="healthBar" class="health-bar-inner"></div>
+            </div>
+            <div id="healthPercent" class="health-percent">100%</div>
+        </div>
+
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+        <div class="game-controls">
+            <button id="backToMenu" class="btn btn-secondary" onclick="window.location.href='../index.html'">Back to Menu</button>
+            <button id="startBtn" class="btn btn-primary">Start Game</button>
+            <button id="pauseBtn" class="btn btn-secondary" disabled>Pause</button>
+            <button id="restartBtn" class="btn btn-secondary">Restart</button>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Play:</h3>
+            <ul>
+                <li>Use <strong>Arrow Keys</strong> or <strong>A/D</strong> to move left and right</li>
+                <li>Catch the golden stars to gain points and restore health</li>
+                <li>Avoid the red meteors - they cost you a life!</li>
+                <li><strong>Health drains over time</strong> - if it reaches zero, you lose a life!</li>
+                <li>Game speeds up as you level up</li>
+            </ul>
+        </div>
+
+        <div id="gameOver" class="game-over hidden">
+            <h2>Game Over!</h2>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <button id="playAgainBtn" class="btn btn-primary">Play Again</button>
+        </div>
+    </div>
+
+    <!-- Load game modules -->
+    <script src="../js/star-catcher/config.js"></script>
+    <script src="../js/star-catcher/player.js"></script>
+    <script src="../js/star-catcher/fallingObject.js"></script>
+    <script src="../js/star-catcher/gameEngine.js"></script>
+    <script src="../js/star-catcher/main.js"></script>
+</body>
+</html>
