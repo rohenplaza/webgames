@@ -20,6 +20,12 @@ class Enemy {
         this.state = 'spawning'; // spawning, idle, aiming, shooting, dying, dead
         this.stateTimer = 0;
 
+        // Random offset so enemies don't all fire at the same time
+        this.idleDelayOffset = Math.random() * CONFIG.ENEMY.IDLE_DELAY_VARIANCE;
+
+        // Grace period - first attack is delayed
+        this.firstIdle = true;
+
         // Animation
         this.animationProgress = 0; // 0-1 for various animations
 
@@ -79,15 +85,24 @@ class Enemy {
      * Idle state - waiting before aiming
      */
     updateIdle() {
-        const aimDelay = Math.max(
+        const baseAimDelay = Math.max(
             CONFIG.ENEMY.AIM_DELAY - (this.level * CONFIG.WAVES.AIM_DELAY_REDUCTION_PER_LEVEL),
             CONFIG.WAVES.MIN_AIM_DELAY
         );
+
+        // Add random offset so enemies don't all fire at once
+        let aimDelay = baseAimDelay + this.idleDelayOffset;
+
+        // Add initial grace period for first attack only
+        if (this.firstIdle) {
+            aimDelay += CONFIG.ENEMY.INITIAL_GRACE_PERIOD;
+        }
 
         if (this.stateTimer >= aimDelay) {
             this.state = 'aiming';
             this.stateTimer = 0;
             this.animationProgress = 0;
+            this.firstIdle = false; // Grace period only applies to first attack
         }
     }
 
@@ -95,7 +110,7 @@ class Enemy {
      * Aiming animation (visual telegraph)
      */
     updateAiming() {
-        this.animationProgress = Math.min(1, this.stateTimer / 500); // 500ms aim animation
+        this.animationProgress = Math.min(1, this.stateTimer / CONFIG.ENEMY.AIMING_DURATION);
 
         if (this.animationProgress >= 1) {
             this.state = 'shooting';
@@ -146,6 +161,23 @@ class Enemy {
         // Apply death fade
         if (this.state === 'dying') {
             ctx.globalAlpha = 1 - this.animationProgress;
+        }
+
+        // Aiming glow effect (warning indicator)
+        if (this.state === 'aiming') {
+            // Pulsing glow
+            const pulseIntensity = 0.5 + 0.5 * Math.sin(this.stateTimer / 100);
+
+            // Outer glow
+            ctx.shadowColor = CONFIG.ENEMY.COLORS.AIMING_GLOW;
+            ctx.shadowBlur = 20 * pulseIntensity;
+            ctx.fillStyle = CONFIG.ENEMY.COLORS.AIMING_GLOW;
+            ctx.globalAlpha = 0.3 * pulseIntensity;
+            ctx.fillRect(this.x - 5, this.y - 5, this.width + 10, this.height + 10);
+
+            // Reset for body drawing
+            ctx.globalAlpha = 1;
+            ctx.shadowBlur = 0;
         }
 
         // Damage flash

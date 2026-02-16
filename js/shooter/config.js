@@ -27,16 +27,22 @@ const CONFIG = {
 
         // Timing
         POPUP_DURATION: 400, // ms to fully appear
-        AIM_DELAY: 1500, // ms before enemy shoots (gives player time)
+        AIM_DELAY: 3000, // ms before enemy starts aiming (increased for easier gameplay)
+        AIMING_DURATION: 1200, // ms for aiming animation (warning time)
         SHOOT_ANIMATION_DURATION: 200, // ms
         DEATH_ANIMATION_DURATION: 300, // ms
+        INITIAL_GRACE_PERIOD: 1500, // ms grace period at start of wave before enemies can shoot
 
         // Appearance
         COLORS: {
             BODY: '#4A4A4A',
             HIGHLIGHT: '#666666',
-            DAMAGE_FLASH: '#FF0000'
-        }
+            DAMAGE_FLASH: '#FF0000',
+            AIMING_GLOW: '#FF6600' // Orange glow when aiming
+        },
+
+        // Timing randomization
+        IDLE_DELAY_VARIANCE: 2000 // Random offset in ms to stagger enemy attacks (0-2000ms between enemies)
     },
 
     // Bullet settings (enemy bullets)
