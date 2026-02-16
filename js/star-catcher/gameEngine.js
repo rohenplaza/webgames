@@ -16,6 +16,7 @@ class GameEngine {
         this.gameRunning = false;
         this.gamePaused = false;
         this.frameCount = 0;
+        this.nextLifeBonusScore = 100; // Track score threshold for life bonus
 
         // Game objects
         this.player = new Player(CONFIG.PLAYER.START_X, CONFIG.PLAYER.START_Y);
@@ -73,6 +74,7 @@ class GameEngine {
         this.level = 1;
         this.health = CONFIG.GAME.INITIAL_HEALTH;
         this.frameCount = 0;
+        this.nextLifeBonusScore = 100;
         this.fallingObjects = [];
         this.player.reset();
         this.updateUI();
@@ -164,6 +166,12 @@ class GameEngine {
             this.score += obj.points;
             // Restore health but don't exceed max
             this.health = Math.min(this.health + CONFIG.OBJECTS.STAR.HEALTH_RESTORE, CONFIG.GAME.MAX_HEALTH);
+
+            // Life bonus: gain a life every 100 points if you have 2 or fewer lives
+            if (this.score >= this.nextLifeBonusScore && this.lives <= 2) {
+                this.lives++;
+                this.nextLifeBonusScore += 100; // Next bonus at +100 points
+            }
         } else {
             this.lives -= obj.damage;
         }
