@@ -61,6 +61,50 @@ document.addEventListener('keyup', (e) => {
 });
 
 /**
+ * Touch Controls for Mobile
+ */
+let touchActive = false;
+
+canvas.addEventListener('touchstart', handleTouch, { passive: false });
+canvas.addEventListener('touchmove', handleTouch, { passive: false });
+canvas.addEventListener('touchend', () => {
+    touchActive = false;
+    game.player.movingLeft = false;
+    game.player.movingRight = false;
+}, { passive: false });
+
+function handleTouch(e) {
+    if (!game.gameRunning || game.gamePaused) return;
+
+    e.preventDefault(); // Prevent scrolling
+    touchActive = true;
+
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+
+    // Get touch position in canvas coordinates
+    const touchX = (touch.clientX - rect.left) * scaleX;
+
+    // Get player center
+    const playerCenterX = game.player.x + game.player.width / 2;
+
+    // Move player toward touch position
+    const threshold = 20; // Dead zone to prevent jittering
+
+    if (touchX < playerCenterX - threshold) {
+        game.player.movingLeft = true;
+        game.player.movingRight = false;
+    } else if (touchX > playerCenterX + threshold) {
+        game.player.movingRight = true;
+        game.player.movingLeft = false;
+    } else {
+        game.player.movingLeft = false;
+        game.player.movingRight = false;
+    }
+}
+
+/**
  * Button Event Listeners
  */
 startBtn.addEventListener('click', () => {
